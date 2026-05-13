@@ -60,6 +60,16 @@ class ApiService {
     };
   }
 
+  // save nim untuk footer
+  Future<void> saveNim(String nim) async {
+    await _storage.write(key: 'nim', value: nim);
+  }
+
+  // ambil nim
+  Future<String?> getNim() async {
+    return await _storage.read(key: 'nim');
+  }
+
   // products
   Future<List<Product>> getProducts() async {
     final url = Uri.parse('$baseUrl/api/products');

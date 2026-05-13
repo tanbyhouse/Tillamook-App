@@ -21,6 +21,20 @@ class _AddProductState extends State<AddProduct> {
   String _selectedCategory = 'Cheese';
   final List<String> _categories = ['Cheese', 'Ice Cream', 'Butter', 'Yogurt'];
 
+  String _nim = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadNim();
+  }
+
+  Future<void> _loadNim() async {
+    final token = await _apiService.getToken();
+    final nim = await _apiService.getNim();
+    if (mounted) setState(() => _nim = nim ?? '');
+  }
+
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
 
@@ -56,71 +70,158 @@ class _AddProductState extends State<AddProduct> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Add Product')),
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          padding: const EdgeInsets.all(16),
+      body: SafeArea(
+        child: Column(
           children: [
-            DropdownButtonFormField<String>(
-              value: _selectedCategory, 
-              decoration: const InputDecoration(
-                labelText: 'Category',
-                border: OutlineInputBorder(),
-              ),
-              items: _categories
-                .map((cat) => DropdownMenuItem(value: cat, child: Text(cat)))
-                .toList(),
-              onChanged: (val) => setState(() => _selectedCategory = val!),
-            ),
-            const SizedBox(height: 16),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                child: Column(
+                  children: [
+                    // Title
+                    Padding(
+                      padding: const EdgeInsets.only(top: 50, bottom: 30),
+                      child: const Text(
+                        'Tillamook\nDairies',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 40,
+                          fontWeight: FontWeight.w900,
+                          color: Color(0xFF1E2D5A),
+                          height: 1.1,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
 
-            TextFormField(
-              controller: _nameController,
-              decoration: const InputDecoration(
-                labelText: 'Product Name',
-                border: OutlineInputBorder(),
-              ),
-              validator: (val) => val!.isEmpty ? 'Name cannot be empty' : null,
-            ),
-            const SizedBox(height: 16),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(24),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(24),
+                        border: Border.all(
+                          color: const Color(0xFF1E2D5A).withOpacity(0.15),
+                        ),
+                      ),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                GestureDetector(
+                                  onTap: () => Navigator.pop(context),
+                                  child: const Icon(
+                                    Icons.arrow_back,
+                                    color: Color(0xFF1E2D5A),
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                const Text(
+                                  'Add Product',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFF1E2D5A),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 20),
 
-            // harga
-            TextFormField(
-              controller: _priceController,
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                labelText: 'Price (Rp)',
-                border: OutlineInputBorder(),
-              ),
-              validator: (val) {
-                if (val!.isEmpty) return 'Price cannot be empty';
-                if (int.tryParse(val) == null) return 'Price must be a number';
-                return null;
-              },
-            ),
-            const SizedBox(height: 16),
+                            DropdownButtonFormField<String>(
+                              initialValue: _selectedCategory, 
+                              // value: _selectedCategory, 
+                              decoration: InputDecoration(
+                                hintText: 'Category',
+                                filled: true,
+                                fillColor: const Color(0x101F2E59),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                  borderSide: BorderSide.none,
+                                ),
+                              ),
+                              items: _categories
+                                .map((cat) => DropdownMenuItem(value: cat, child: Text(cat)))
+                                .toList(),
+                              onChanged: (val) => setState(() => _selectedCategory = val!),
+                            ),
+                            const SizedBox(height: 12),
 
-            // desc
-            TextFormField(
-              controller: _descController,
-              maxLines: 3,
-              decoration: const InputDecoration(
-                labelText: 'Description',
-                border: OutlineInputBorder(),
-              ),
-              validator: (val) => val!.isEmpty ? "Desciption cannot be empty" : null,
-            ),
-            const SizedBox(height: 24),
+                            TextFormField(
+                              controller: _nameController,
+                              decoration: const InputDecoration(
+                                hintText: 'Product Name',
+                              ),
+                              validator: (val) => val!.isEmpty ? 'Name cannot be empty' : null,
+                            ),
+                            const SizedBox(height: 12),
 
-            ElevatedButton(
-              onPressed: _isLoading ? null : _submit, 
-              child: _isLoading
-                ? const CircularProgressIndicator(color: Colors.white)
-                : const Text('Save Draft'),
+                            // harga
+                            TextFormField(
+                              controller: _priceController,
+                              keyboardType: TextInputType.number,
+                              decoration: const InputDecoration(
+                                hintText: 'Price (Rp)',
+                              ),
+                              validator: (val) {
+                                if (val!.isEmpty) return 'Price cannot be empty';
+                                if (int.tryParse(val) == null) return 'Price must be a number';
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 12),
+
+                            // desc
+                            TextFormField(
+                              controller: _descController,
+                              maxLines: 3,
+                              decoration: const InputDecoration(
+                                hintText: 'Description',
+                                border: OutlineInputBorder(),
+                              ),
+                              validator: (val) => val!.isEmpty ? "Desciption cannot be empty" : null,
+                            ),
+                            const SizedBox(height: 24),
+
+                            ElevatedButton(
+                              onPressed: _isLoading ? null : _submit, 
+                              child: _isLoading
+                                ? const SizedBox(
+                                  height: 22,
+                                  width: 22,
+                                  child: 
+                                  CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                                : const Text('Save Draft'),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+
+                  ],
+                ),
+              ),
+            ),
+            
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: Text( 
+                _nim,
+                style: const TextStyle(
+                  color: Color(0xFF1E2D5A),
+                  fontSize: 13,
+                ),
+              ),
             ),
           ],
-        ),
+        )
       ),
     );
   }

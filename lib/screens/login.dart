@@ -33,6 +33,7 @@ class _LoginState extends State<Login> {
     setState(() => _isLoading = false);
 
     if (token != null) {
+      await _apiService.saveNim(nim);
       if (mounted) {
         Navigator.pushReplacement(
           context, 
