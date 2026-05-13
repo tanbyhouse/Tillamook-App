@@ -20,12 +20,12 @@ class MyApp extends StatelessWidget {
           Theme.of(context).textTheme,
         ),
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF1F2E59),
-          primary: const Color(0xFF1F2E59),
+          seedColor: const Color(0xFF323497),
+          primary: const Color(0xFF323497),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF1F2E59),
+            backgroundColor: const Color(0xFF323497),
             foregroundColor: Colors.white,
             minimumSize: const Size(double.infinity, 56),
             shape: RoundedRectangleBorder(
@@ -43,16 +43,16 @@ class MyApp extends StatelessWidget {
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide.none,
-            // borderSide: const BorderSide(color: Color(0xFF1F2E59), width: 1.5)
+            // borderSide: const BorderSide(color: Color(0xFF323497), width: 1.5)
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
-            borderSide: const BorderSide(color: Color(0x301F2E59), width: 1)
+            borderSide: const BorderSide(color: Color(0x30323497), width: 1)
             // borderSide: BorderSide.none,
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
-            borderSide: const BorderSide(color: Color(0xFF1F2E59), width: 1.5)
+            borderSide: const BorderSide(color: Color(0xFF323497), width: 1.5)
           ),
           contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
         ),

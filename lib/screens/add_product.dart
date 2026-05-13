@@ -101,7 +101,8 @@ class _AddProductState extends State<AddProduct> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(24),
                         border: Border.all(
-                          color: const Color(0xFF1E2D5A).withOpacity(0.15),
+                          color: const Color(0xFF1E2D5A),
+                          width: 2.0
                         ),
                       ),
                       child: Form(
