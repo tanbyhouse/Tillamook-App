@@ -180,7 +180,7 @@ class _SubmitAssignmentState extends State<SubmitAssignment> {
                                         strokeWidth: 2,
                                       ),
                                     )
-                                  : const Text('Save Draft'),
+                                  : const Text('Submit Assignment'),
                             ),
                           ],
                         ),
