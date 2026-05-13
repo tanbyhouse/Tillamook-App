@@ -25,7 +25,7 @@ class ApiService {
   }
 
   // auth
-  Future<String?> login(String nim) async {
+  Future<String?> login(String nim, String password) async {
     final url = Uri.parse('$baseUrl/api/auth/login');
 
     final response = await http.post(
@@ -36,7 +36,7 @@ class ApiService {
       },
       body: jsonEncode({
         'username': nim,
-        'password': nim,
+        'password': password,
       }),
     );
 

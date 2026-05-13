@@ -20,15 +20,21 @@ class _LoginState extends State<Login> {
 
   Future<void> _login() async {
     final nim = _nimController.text.trim();
+    final password = _passwordController.text.trim();
 
     if (nim.isEmpty) {
       _showSnackBar('NIM cannot be empty');
       return;
     }
 
+    if (password.isEmpty) {
+      _showSnackBar('Password cannot be empty');
+      return;
+    }
+
     setState(() => _isLoading = true);
 
-    final token = await _apiService.login(nim);
+    final token = await _apiService.login(nim, password);
 
     setState(() => _isLoading = false);
 
